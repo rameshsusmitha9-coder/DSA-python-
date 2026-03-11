@@ -1,0 +1,28 @@
+include <algorithm>
+#include <vector>
+using namespace std;
+
+class Solution {
+  public:
+    int getMinDiff(vector<int> &arr, int k) {
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+
+        // Initial difference without any modification
+        int ans = arr[n-1] - arr[0];
+
+        int smallest, largest;
+
+        for(int i = 1; i < n; i++) {
+            // Skip if decreasing arr[i] by k makes it negative
+            if(arr[i] - k < 0) 
+                continue;
+
+            // Smallest could be either first element + k or current element - k
+            smallest = min(arr[0] + k, arr[i] - k);
+
+            // Largest could be either previous element + k or last element - k
+            largest = max(arr[i-1] + k, arr[n-1] - k);
+
+            ans = min(ans, largest - smallest);
+        }
